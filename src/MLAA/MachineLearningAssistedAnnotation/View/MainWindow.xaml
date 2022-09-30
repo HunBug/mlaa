@@ -7,7 +7,7 @@
         xmlns:vm="clr-namespace:Mlaa.ViewModel"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800"
-        x:Name="window" Loaded="window_Loaded">
+        x:Name="Window" Loaded="Window_Loaded">
     <Window.DataContext>
         <vm:MainWindowViewModel/>
     </Window.DataContext>
@@ -16,7 +16,7 @@
             <MenuItem Header="_File">
                 <MenuItem Header="_Open"/>
                 <Separator />
-                <MenuItem Header="E_xit" Command="{Binding ExitAppCommand}" CommandParameter="{Binding ElementName=window, Mode=OneWay}"/>
+                <MenuItem Header="E_xit" Command="{Binding ExitAppCommand}" CommandParameter="{Binding ElementName=Window, Mode=OneWay}"/>
             </MenuItem>
         </Menu>
         <StackPanel>

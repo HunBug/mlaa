@@ -25,7 +25,7 @@ namespace Mlaa.View
             InitializeComponent();
         }
 
-        private void window_Loaded(object sender, RoutedEventArgs e)
+        private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             var viewModel = new ViewModel.BoundingBoxAnnotationViewModel();
             viewModel.AnnotationTask = new Model.AnnotationTask(new Model.VideoFrameImageSource(@"C:\Users\akoss\Downloads\file_example_MP4_1920_18MG.mp4 "));
