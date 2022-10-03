@@ -2,6 +2,7 @@
 using Mlaa.Model;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,8 +33,8 @@ namespace Mlaa.ViewModel
         public ICommand NextFrameCommand { get; private set; }
         public ICommand PreviousFrameCommand { get; private set; }
 
-        public int FrameIndex 
-        { 
+        public int FrameIndex
+        {
             get => AnnotationTask?.FrameImageSource.CurrentFrameIndex ?? 0;
             set
             {
@@ -44,7 +45,16 @@ namespace Mlaa.ViewModel
         }
         public BitmapSource? FrameImage
         {
-            get { return AnnotationTask?.FrameImageSource.GetFrameBitmap(FrameIndex).ToBitmapSource() ?? null ; }
+            get { return AnnotationTask?.FrameImageSource.GetFrameBitmap(FrameIndex).ToBitmapSource() ?? null; }
+        }
+
+        public Sample? CurrentSample
+        {
+            get => AnnotationTask?.Samples.FirstOrDefault(s => s.FrameIndex == FrameIndex);
+        }
+        public ObservableCollection<Annotation> Annotations
+        {
+            get => new ObservableCollection<Annotation>(CurrentSample?.Annotations ?? new List<Annotation>());
         }
         private void NextFrame(object? obj)
         {

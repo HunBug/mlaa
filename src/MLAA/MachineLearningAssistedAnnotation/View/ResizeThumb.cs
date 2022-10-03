@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Windows.Controls.Primitives;
 using System.Windows.Controls;
 using System.Windows;
+using System.Windows.Data;
+using System.Xml.Linq;
 
 namespace Mlaa.View
 {
@@ -19,10 +21,16 @@ namespace Mlaa.View
         
         private void ResizeThumb_DragDelta(object sender, DragDeltaEventArgs e)
         {
-            Control? item = DataContext as Control;
+            //TODO HACK01 remove hack, handle "itemPresenter" in the XAML file
+            FrameworkElement? item = DataContext as FrameworkElement;
+            FrameworkElement? itemPresenter = DataContext as FrameworkElement;
 
             if (item != null)
             {
+                if (item.TemplatedParent is ContentPresenter contentPresenter)
+                {
+                    itemPresenter = contentPresenter;
+                }
                 double deltaVertical, deltaHorizontal;
 
                 switch (VerticalAlignment)
@@ -35,7 +43,7 @@ namespace Mlaa.View
                     case VerticalAlignment.Top:
                         deltaVertical = Math.Min(e.VerticalChange,
                             item.ActualHeight - item.MinHeight);
-                        Canvas.SetTop(item, Canvas.GetTop(item) + deltaVertical);
+                        Canvas.SetTop(itemPresenter, Canvas.GetTop(itemPresenter) + deltaVertical);
                         item.Height -= deltaVertical;
                         break;
                     default:
@@ -47,7 +55,7 @@ namespace Mlaa.View
                     case HorizontalAlignment.Left:
                         deltaHorizontal = Math.Min(e.HorizontalChange,
                             item.ActualWidth - item.MinWidth);
-                        Canvas.SetLeft(item, Canvas.GetLeft(item) + deltaHorizontal);
+                        Canvas.SetLeft(itemPresenter, Canvas.GetLeft(itemPresenter) + deltaHorizontal);
                         item.Width -= deltaHorizontal;
                         break;
                     case HorizontalAlignment.Right:
