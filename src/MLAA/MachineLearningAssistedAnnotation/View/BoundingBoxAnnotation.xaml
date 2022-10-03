@@ -10,41 +10,16 @@
     <UserControl.DataContext>
         <vm:BoundingBoxAnnotationViewModel/>
     </UserControl.DataContext>
-    <UserControl.Resources>
-        <ControlTemplate x:Key="MoveThumbTemplate" TargetType="{x:Type local:MoveThumb}">
-            <Rectangle Fill="Transparent"/>
-        </ControlTemplate>
-
-        <ControlTemplate x:Key="ResizeDecoratorTemplate" TargetType="Control">
-            <Grid>
-                <local:ResizeThumb Height="3" Cursor="SizeNS" Margin="0 -4 0 0" VerticalAlignment="Top" HorizontalAlignment="Stretch"/>
-                <local:ResizeThumb Width="3" Cursor="SizeWE" Margin="-4 0 0 0" VerticalAlignment="Stretch" HorizontalAlignment="Left"/>
-                <local:ResizeThumb Width="3" Cursor="SizeWE" Margin="0 0 -4 0" VerticalAlignment="Stretch" HorizontalAlignment="Right"/>
-                <local:ResizeThumb Height="3" Cursor="SizeNS" Margin="0 0 0 -4" VerticalAlignment="Bottom"  HorizontalAlignment="Stretch"/>
-                <local:ResizeThumb Width="7" Height="7" Cursor="SizeNWSE" Margin="-6 -6 0 0" VerticalAlignment="Top" HorizontalAlignment="Left"/>
-                <local:ResizeThumb Width="7" Height="7" Cursor="SizeNESW" Margin="0 -6 -6 0" VerticalAlignment="Top" HorizontalAlignment="Right"/>
-                <local:ResizeThumb Width="7" Height="7" Cursor="SizeNESW" Margin="-6 0 0 -6" VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
-                <local:ResizeThumb Width="7" Height="7" Cursor="SizeNWSE" Margin="0 0 -6 -6" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
-            </Grid>
-        </ControlTemplate>
-        <ControlTemplate x:Key="DesignerItemTemplate" TargetType="ContentControl">
-            <Grid DataContext="{Binding RelativeSource={RelativeSource TemplatedParent}}">
-                <local:MoveThumb Template="{StaticResource MoveThumbTemplate}" Cursor="SizeAll"/>
-                <Control Template="{StaticResource ResizeDecoratorTemplate}"/>
-                <ContentPresenter Content="{TemplateBinding ContentControl.Content}"/>
-            </Grid>
-        </ControlTemplate>
-    </UserControl.Resources>
     <StackPanel>
         <Button Content="Next Frame" Command="{Binding NextFrameCommand}"/>
         <Button Content="Previous Frame" Command="{Binding PreviousFrameCommand}"/>
         <TextBlock Text="{Binding FrameIndex}"/>
-        <Grid>
+        <Grid MouseMove="Rectangle_MouseMove" MouseUp="Rectangle_MouseUp">
             <Image Source="{Binding FrameImage}"/>
-            <ItemsControl ItemsSource="{Binding Path=Annotations}">
+            <ItemsControl x:Name="AnnotationCanvas" ItemsSource="{Binding Path=Annotations}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <Canvas/>
+                        <Canvas IsItemsHost="True"/>
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemContainerStyle>
@@ -55,9 +30,19 @@
                 </ItemsControl.ItemContainerStyle>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <ContentControl Width="{Binding Path=BoundingBox.Width}" Height="{Binding Path=BoundingBox.Height}" Template="{StaticResource DesignerItemTemplate}">
-                            <Ellipse Fill="Blue" IsHitTestVisible="False"/>
-                        </ContentControl>
+                        <Grid>
+                            <Ellipse Height="3" Fill="Gray" Cursor="SizeNS" Margin="0 -4 0 0" VerticalAlignment="Top" HorizontalAlignment="Stretch" MouseDown="Rectangle_MouseDown"/>
+                            <Ellipse Width="3" Fill="Gray" Cursor="SizeWE" Margin="-4 0 0 0"  VerticalAlignment="Stretch" HorizontalAlignment="Left" MouseDown="Rectangle_MouseDown"/>
+                            <Ellipse Width="3" Fill="Gray" Cursor="SizeWE" Margin="0 0 -4 0" VerticalAlignment="Stretch" HorizontalAlignment="Right" MouseDown="Rectangle_MouseDown"/>
+                            <Ellipse Height="3" Fill="Gray" Cursor="SizeNS" Margin="0 0 0 -4" VerticalAlignment="Bottom"  HorizontalAlignment="Stretch" MouseDown="Rectangle_MouseDown"/>
+                            <Ellipse Width="7" Fill="Gray" Height="7" Cursor="SizeNWSE" Margin="-6 -6 0 0" VerticalAlignment="Top" HorizontalAlignment="Left" MouseDown="Rectangle_MouseDown"/>
+                            <Ellipse Width="7" Fill="Gray" Height="7" Cursor="SizeNESW" Margin="0 -6 -6 0" VerticalAlignment="Top" HorizontalAlignment="Right" MouseDown="Rectangle_MouseDown"/>
+                            <Ellipse Width="7" Fill="Gray" Height="7" Cursor="SizeNESW" Margin="-6 0 0 -6" VerticalAlignment="Bottom" HorizontalAlignment="Left" MouseDown="Rectangle_MouseDown"/>
+                            <Ellipse Width="7" Fill="Gray" Height="7" Cursor="SizeNWSE" Margin="0 0 -6 -6" VerticalAlignment="Bottom" HorizontalAlignment="Right" MouseDown="Rectangle_MouseDown"/>
+                            <Rectangle Width="{Binding Path=BoundingBox.Width}" Height="{Binding Path=BoundingBox.Height}"
+                                   Fill="#80A0A000" MouseDown="Rectangle_MouseDown" />
+                        </Grid>
+                        
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

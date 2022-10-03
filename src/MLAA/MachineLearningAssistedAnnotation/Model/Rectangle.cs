@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Mlaa.Model
 {
-    internal struct Rectangle
+    internal class Rectangle
     {
         public double Top { get; set; }
         public double Left { get; set; }
