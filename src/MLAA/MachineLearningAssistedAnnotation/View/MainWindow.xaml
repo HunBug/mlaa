@@ -1,0 +1,30 @@
+﻿<Window x:Class="Mlaa.View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Mlaa.View"
+        xmlns:vm="clr-namespace:Mlaa.ViewModel"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800"
+        x:Name="Window">
+    <Window.DataContext>
+        <vm:MainWindowViewModel/>
+    </Window.DataContext>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+                <MenuItem Header="Open _video..." Click="OpenVideo_Click"/>
+                <MenuItem Header="Open _image folder..." Click="OpenFolder_Click"/>
+                <MenuItem Header="_Save" Click="Save_Click" />
+                <Separator />
+                <MenuItem Header="E_xit" Command="{Binding ExitAppCommand}" CommandParameter="{Binding ElementName=Window, Mode=OneWay}"/>
+            </MenuItem>
+        </Menu>
+        <StackPanel>
+            <TextBlock Text="{Binding AnnotationTaskViewModel.Path}" />
+            <TextBlock Text="{Binding AnnotationTaskViewModel.SamplePath}" />
+            <local:BoundingBoxAnnotation x:Name="BBoxAnnotation" />
+        </StackPanel>
+    </DockPanel>
+</Window>
