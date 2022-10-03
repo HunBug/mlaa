@@ -14,7 +14,7 @@
         <Button Content="Next Frame" Command="{Binding NextFrameCommand}"/>
         <Button Content="Previous Frame" Command="{Binding PreviousFrameCommand}"/>
         <TextBlock Text="{Binding FrameIndex}"/>
-        <Grid MouseMove="Rectangle_MouseMove" MouseUp="Rectangle_MouseUp">
+        <Grid MouseMove="Rectangle_MouseMove" MouseUp="Rectangle_MouseUp" MouseDown="EmptyCanvas_MouseDown">
             <Image Source="{Binding FrameImage}"/>
             <ItemsControl x:Name="AnnotationCanvas" ItemsSource="{Binding Path=Annotations}">
                 <ItemsControl.ItemsPanel>
@@ -40,7 +40,7 @@
                             <Ellipse Width="7" Fill="Gray" Height="7" Cursor="SizeNESW" Margin="-6 0 0 -6" VerticalAlignment="Bottom" HorizontalAlignment="Left" MouseDown="Rectangle_MouseDown"/>
                             <Ellipse Width="7" Fill="Gray" Height="7" Cursor="SizeNWSE" Margin="0 0 -6 -6" VerticalAlignment="Bottom" HorizontalAlignment="Right" MouseDown="Rectangle_MouseDown"/>
                             <Rectangle Width="{Binding Path=BoundingBox.Width}" Height="{Binding Path=BoundingBox.Height}"
-                                   Fill="#80A0A000" MouseDown="Rectangle_MouseDown" />
+                                   Fill="#80A0A000" MouseDown="Rectangle_MouseDown" MouseUp="Rectangle_MouseUp_1" />
                         </Grid>
                         
                     </DataTemplate>

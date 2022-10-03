@@ -27,6 +27,8 @@ namespace Mlaa.View
         }
 
         private bool isDraggingRectangle;
+        private bool isAddingNewRectangle;
+        private bool isDeleting;
 
         private Point draggingStartPoint;
         private Rectangle? draggedObject;
@@ -47,9 +49,23 @@ namespace Mlaa.View
                 var parentGrid = resizeObject.Parent as Grid;
                 draggedObject = parentGrid?.Children.OfType<Rectangle>().Single();
             }
+            if (e.RightButton == MouseButtonState.Pressed)
+            {
+                isDeleting = true;
+            }
+            e.Handled = true;
         }
         //TODO HACK01
         private void Rectangle_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (draggedObject != null && isDraggingRectangle)
+            {
+                HandleAnnotationMoveAndResize();
+            }
+            e.Handled = true;
+        }
+
+        private void HandleAnnotationMoveAndResize()
         {
             if (draggedObject == null)
             {
@@ -74,7 +90,7 @@ namespace Mlaa.View
                 // calculate delta
                 double deltaX = currentPoint.X - draggingStartPoint.X;
                 double deltaY = currentPoint.Y - draggingStartPoint.Y;
-                
+
                 var moveObject = false;
                 if (resizeObject != null && draggedObject != null)
                 {
@@ -115,7 +131,7 @@ namespace Mlaa.View
                     if (horizontalAlignment != HorizontalAlignment.Left)
                     {
                         deltaX = 0;
-                     }
+                    }
                     if (verticalAlignment != VerticalAlignment.Top)
                     {
                         deltaY = 0;
@@ -133,16 +149,69 @@ namespace Mlaa.View
                     Canvas.SetLeft(annotationControl, Canvas.GetLeft(annotationControl) + deltaX);
                     Canvas.SetTop(annotationControl, Canvas.GetTop(annotationControl) + deltaY);
 
-                    
+
                 }
                 // update start point
                 draggingStartPoint = currentPoint;
             }
         }
+
         //TODO HACK01
         private void Rectangle_MouseUp(object sender, MouseButtonEventArgs e)
         {
             isDraggingRectangle = false;
+            if (isAddingNewRectangle)
+            {
+                var itemContainer = sender as Grid;
+                if (itemContainer?.DataContext is ViewModel.BoundingBoxAnnotationViewModel)
+                {
+                    var viewModel = (ViewModel.BoundingBoxAnnotationViewModel)itemContainer.DataContext;
+                    var currentPosition = Mouse.GetPosition(AnnotationCanvas);
+                    viewModel.AddAnnotation(new Model.Annotation() 
+                    {
+                        BoundingBox = new Model.Rectangle()
+                        {
+                            Left = draggingStartPoint.X,
+                            Top = draggingStartPoint.Y,
+                            Width = currentPosition.X - draggingStartPoint.X,
+                            Height = currentPosition.Y - draggingStartPoint.Y
+                        }
+                    });
+                }
+            }
+            isAddingNewRectangle = false;
+            e.Handled = true;
+        }
+
+        private void EmptyCanvas_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                isAddingNewRectangle = true;
+                draggingStartPoint = Mouse.GetPosition(AnnotationCanvas);
+            }
+            e.Handled = true;
+        }
+
+        private void Rectangle_MouseUp_1(object sender, MouseButtonEventArgs e)
+        {
+            if (isDeleting)
+            {
+                var currentObject = sender as Rectangle;
+                if (currentObject != null)
+                {
+                    if (currentObject == draggedObject)
+                    {
+                        var viewModel = AnnotationCanvas.DataContext as ViewModel.BoundingBoxAnnotationViewModel;
+                        if (viewModel != null)
+                        {
+                            viewModel.RemoveAnnotation(currentObject.DataContext as Model.Annotation);
+                        }
+                    }
+                }
+            }
+            isDeleting = false;
+            e.Handled = true;
         }
     }
 }

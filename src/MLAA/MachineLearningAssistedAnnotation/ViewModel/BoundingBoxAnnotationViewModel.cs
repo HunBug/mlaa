@@ -56,6 +56,22 @@ namespace Mlaa.ViewModel
         {
             get => new ObservableCollection<Annotation>(CurrentSample?.Annotations ?? new List<Annotation>());
         }
+
+        public void AddAnnotation(Annotation annotation)
+        {
+            CurrentSample?.Annotations.Add(annotation);
+            NotifyPropertyChanged(nameof(Annotations));
+        }
+
+        public void RemoveAnnotation(Annotation? annotation)
+        {
+            if (annotation != null)
+            {
+                CurrentSample?.Annotations.Remove(annotation);
+                NotifyPropertyChanged(nameof(Annotations));
+            }
+        }
+        
         private void NextFrame(object? obj)
         {
             FrameIndex++;
