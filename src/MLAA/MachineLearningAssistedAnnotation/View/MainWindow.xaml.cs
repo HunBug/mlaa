@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.WindowsAPICodePack.Dialogs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,38 +25,61 @@ namespace Mlaa.View
         {
             InitializeComponent();
         }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private void OpenVideo_Click(object sender, RoutedEventArgs e)
         {
-            var annotationTask = new Model.AnnotationTask(new Model.VideoFrameImageSource(@"C:\Users\akoss\Downloads\file_example_MP4_1920_18MG.mp4 "));
-            annotationTask.Samples.Add(
-                new Model.Sample
+            var openFileDialog = new Microsoft.Win32.OpenFileDialog();
+            openFileDialog.Filter = "Video files (*.mp4)|*.mp4|All files (*.*)|*.*";
+            if (openFileDialog.ShowDialog() == true)
+            {
+                var annotationTask = new Model.AnnotationTask(new Model.VideoFrameImageSource(openFileDialog.FileName));
+                var viewModel = new ViewModel.BoundingBoxAnnotationViewModel();
+                //Load annotations if exist
+                var annotationFilePath = System.IO.Path.ChangeExtension(openFileDialog.FileName, ".json");
+                if (System.IO.File.Exists(annotationFilePath))
                 {
-                    FrameIndex = 0,
-                    Annotations = new List<Model.Annotation>
-                    {
-                        new Model.Annotation {BoundingBox = new Model.Rectangle {Top= 50,   Left= 0, Width= 100, Height= 100}, Label= "Car" },
-                        new Model.Annotation {BoundingBox = new Model.Rectangle {Top= 100, Left= 100, Width= 150, Height= 100}, Label= "Car" },
-                        new Model.Annotation {BoundingBox = new Model.Rectangle {Top= 200, Left= 200, Width= 100, Height= 150}, Label= "Car" },
-                    }
+                    annotationTask.Load(annotationFilePath);
                 }
-            );
-            var viewModel = new ViewModel.BoundingBoxAnnotationViewModel();
-            viewModel.AnnotationTask = annotationTask;
-            BBoxAnnotation.DataContext = viewModel;
-            
+                viewModel.AnnotationTask = annotationTask;
+                BBoxAnnotation.DataContext = viewModel;
+                (DataContext as ViewModel.MainWindowViewModel).AnnotationTaskViewModel = new ViewModel.AnnotationTaskViewModel()
+                {
+                    AnnotationTask = annotationTask
+                };
+            }
         }
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void OpenFolder_Click(object sender, RoutedEventArgs e)
         {
-            // sava datacontext to file
+            var dialog = new CommonOpenFileDialog();
+            dialog.IsFolderPicker = true;
+            if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
+            {
+                var annotationTask = new Model.AnnotationTask(new Model.ImageFolderImageSource(dialog.FileName));
+                var bboxViewModel = new ViewModel.BoundingBoxAnnotationViewModel();
+                //Load annotations if exist
+                var annotationFilePath = System.IO.Path.ChangeExtension(dialog.FileName, ".json");
+                if (System.IO.File.Exists(annotationFilePath))
+                {
+                    annotationTask.Load(annotationFilePath);
+                }
+                bboxViewModel.AnnotationTask = annotationTask;
+                BBoxAnnotation.DataContext = bboxViewModel;
+                (DataContext as ViewModel.MainWindowViewModel).AnnotationTaskViewModel = new ViewModel.AnnotationTaskViewModel()
+                {
+                    AnnotationTask = annotationTask
+                };
+            }
+        }
+
+        private void Save_Click(object sender, RoutedEventArgs e)
+        {
             var datacontext = BBoxAnnotation.DataContext as ViewModel.BoundingBoxAnnotationViewModel;
             if (datacontext != null)
             {
                 var annotationTask = datacontext.AnnotationTask;
                 if (annotationTask != null)
                 {
-                    annotationTask.Save(@"C:\Users\akoss\Downloads\file_example_MP4_1920_18MG.json");
+                    annotationTask.Save((DataContext as ViewModel.MainWindowViewModel).AnnotationTaskViewModel.SamplePath);
                 }
             }
         }

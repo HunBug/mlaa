@@ -12,13 +12,14 @@ namespace Mlaa.Model
 {
     internal class VideoFrameImageSource : IFrameImageSource
     {
-        private VideoCapture VideoCapture;
+        private readonly VideoCapture VideoCapture;
         public VideoFrameImageSource(string videoFilePath)
         {
             VideoFilePath = videoFilePath;
             VideoCapture = new VideoCapture(VideoFilePath);
             CurrentFrameIndex = 0;
         }
+        public string Path { get => VideoFilePath; }
         public string VideoFilePath { get; private set; }
         public int FrameCount { get => (int)Math.Round(VideoCapture.Get(Emgu.CV.CvEnum.CapProp.FrameCount)); }
         public int FrameWidth { get => (int)Math.Round(VideoCapture.Get(Emgu.CV.CvEnum.CapProp.FrameWidth)); }

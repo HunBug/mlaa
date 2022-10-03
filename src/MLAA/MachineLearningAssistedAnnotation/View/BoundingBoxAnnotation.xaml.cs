@@ -148,9 +148,8 @@ namespace Mlaa.View
                     annotation.BoundingBox.Top += deltaY;
                     Canvas.SetLeft(annotationControl, Canvas.GetLeft(annotationControl) + deltaX);
                     Canvas.SetTop(annotationControl, Canvas.GetTop(annotationControl) + deltaY);
-
-
                 }
+                annotation.AnnotationSource = Model.AnnotationSource.User;
                 // update start point
                 draggingStartPoint = currentPoint;
             }
@@ -175,7 +174,8 @@ namespace Mlaa.View
                             Top = draggingStartPoint.Y,
                             Width = currentPosition.X - draggingStartPoint.X,
                             Height = currentPosition.Y - draggingStartPoint.Y
-                        }
+                        },
+                        AnnotationSource = Model.AnnotationSource.User
                     });
                 }
             }

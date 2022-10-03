@@ -10,6 +10,7 @@ namespace Mlaa.Model
 {
     internal interface IFrameImageSource
     {
+        string Path { get; }
         int FrameCount { get; }
         int FrameWidth { get; }
         int FrameHeight { get; }

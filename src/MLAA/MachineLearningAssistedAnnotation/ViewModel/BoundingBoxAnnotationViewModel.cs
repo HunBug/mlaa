@@ -41,6 +41,8 @@ namespace Mlaa.ViewModel
                 AnnotationTask?.FrameImageSource.GetFrameBitmap(value);
                 NotifyPropertyChanged();
                 NotifyPropertyChanged(nameof(FrameImage));
+                NotifyPropertyChanged(nameof(CurrentSample));
+                NotifyPropertyChanged(nameof(Annotations));
             }
         }
         public BitmapSource? FrameImage
@@ -59,7 +61,15 @@ namespace Mlaa.ViewModel
 
         public void AddAnnotation(Annotation annotation)
         {
-            CurrentSample?.Annotations.Add(annotation);
+            if (CurrentSample == null)
+            {
+                AnnotationTask?.Samples.Add(new Sample { FrameIndex = FrameIndex, Annotations = new List<Annotation> { annotation } });
+                NotifyPropertyChanged(nameof(CurrentSample));
+            }
+            else
+            {
+                CurrentSample?.Annotations.Add(annotation);
+            }
             NotifyPropertyChanged(nameof(Annotations));
         }
 
@@ -69,6 +79,11 @@ namespace Mlaa.ViewModel
             {
                 CurrentSample?.Annotations.Remove(annotation);
                 NotifyPropertyChanged(nameof(Annotations));
+                if (CurrentSample?.Annotations.Count == 0)
+                {
+                    AnnotationTask?.Samples.Remove(CurrentSample);
+                    NotifyPropertyChanged(nameof(CurrentSample));
+                }
             }
         }
         

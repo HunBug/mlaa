@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Mlaa.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,8 +9,10 @@ using System.Windows.Input;
 
 namespace Mlaa.ViewModel
 {
-    internal class MainWindowViewModel
+    internal class MainWindowViewModel : ViewModelBase
     {
+        private AnnotationTaskViewModel? annotationTaskViewModel;
+
         public MainWindowViewModel()
         {
             ExitAppCommand = new RelayCommand(ExitApp, CanExit);
@@ -23,5 +26,15 @@ namespace Mlaa.ViewModel
         }
 
         private bool CanExit(object? parameter) => true;
+
+        public AnnotationTaskViewModel? AnnotationTaskViewModel
+        {
+            get => annotationTaskViewModel;
+            set
+            {
+                annotationTaskViewModel = value;
+                NotifyPropertyChanged("");
+            }
+        }
     }
 }

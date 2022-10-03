@@ -7,19 +7,23 @@
         xmlns:vm="clr-namespace:Mlaa.ViewModel"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800"
-        x:Name="Window" Loaded="Window_Loaded" Closing="Window_Closing">
+        x:Name="Window">
     <Window.DataContext>
         <vm:MainWindowViewModel/>
     </Window.DataContext>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
-                <MenuItem Header="_Open"/>
+                <MenuItem Header="Open _video..." Click="OpenVideo_Click"/>
+                <MenuItem Header="Open _image folder..." Click="OpenFolder_Click"/>
+                <MenuItem Header="_Save" Click="Save_Click" />
                 <Separator />
                 <MenuItem Header="E_xit" Command="{Binding ExitAppCommand}" CommandParameter="{Binding ElementName=Window, Mode=OneWay}"/>
             </MenuItem>
         </Menu>
         <StackPanel>
+            <TextBlock Text="{Binding AnnotationTaskViewModel.Path}" />
+            <TextBlock Text="{Binding AnnotationTaskViewModel.SamplePath}" />
             <local:BoundingBoxAnnotation x:Name="BBoxAnnotation" />
         </StackPanel>
     </DockPanel>
