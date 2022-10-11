@@ -83,5 +83,10 @@ namespace Mlaa.View
                 }
             }
         }
+
+        private void TestNN_Click(object sender, RoutedEventArgs e)
+        {
+            NeuralNetwork.Class1.Test();
+        }
     }
 }
