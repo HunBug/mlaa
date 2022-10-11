@@ -22,6 +22,7 @@
             </MenuItem>
         </Menu>
         <StackPanel>
+            <Button Content="TestNN" Click="TestNN_Click"/>
             <TextBlock Text="{Binding AnnotationTaskViewModel.Path}" />
             <TextBlock Text="{Binding AnnotationTaskViewModel.SamplePath}" />
             <local:BoundingBoxAnnotation x:Name="BBoxAnnotation" />
