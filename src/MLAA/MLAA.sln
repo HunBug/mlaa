@@ -5,7 +5,9 @@ VisualStudioVersion = 17.3.32825.248
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "mlaa", "MachineLearningAssistedAnnotation\mlaa.csproj", "{902B9525-30B8-47A1-81AB-88DCBB10BDDF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeuralNetwork", "NeuralNetwork\NeuralNetwork.csproj", "{8C4CA63F-03CD-4F3D-8A6B-5B06925B977A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NeuralNetwork", "NeuralNetwork\NeuralNetwork.csproj", "{8C4CA63F-03CD-4F3D-8A6B-5B06925B977A}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "ObjectDetection", "Python\ObjectDetection\ObjectDetection.pyproj", "{212E2BB3-CF3A-41F4-90A5-3A3C1C704776}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,8 @@ Global
 		{8C4CA63F-03CD-4F3D-8A6B-5B06925B977A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C4CA63F-03CD-4F3D-8A6B-5B06925B977A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C4CA63F-03CD-4F3D-8A6B-5B06925B977A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{212E2BB3-CF3A-41F4-90A5-3A3C1C704776}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{212E2BB3-CF3A-41F4-90A5-3A3C1C704776}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
