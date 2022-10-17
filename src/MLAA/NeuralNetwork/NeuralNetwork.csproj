@@ -15,4 +15,8 @@
     <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Python\ModelClient\generated-csharp\src\Server.Model\Server.Model.csproj" />
+  </ItemGroup>
+
 </Project>

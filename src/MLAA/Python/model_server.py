@@ -63,9 +63,9 @@ class ModelServer():
     def _register_object_detection_routes(self):
         @self.app.post("/predict")
         async def predict(file: UploadFile = File(...)):
-            if file.content_type != "image/jpeg":
-                raise HTTPException(
-                    status_code=415, detail="Unsupported media type.")
+            # if file.content_type != "image/jpeg":
+            #     raise HTTPException(
+            #         status_code=415, detail="Unsupported media type.")
             image_bytes = await file.read()
             image = self._preprocess_image_input(image_bytes)
             detections = self.model.predict(image)
@@ -78,9 +78,9 @@ class ModelServer():
     def _register_image_classification_routes(self):
         @self.app.post("/predict")
         async def predict(file: UploadFile = File(...)):
-            if file.content_type != "image/jpeg":
-                raise HTTPException(
-                    status_code=415, detail="Unsupported media type.")
+            # if file.content_type != "image/jpeg":
+            #     raise HTTPException(
+            #         status_code=415, detail="Unsupported media type.")
             image_bytes = await file.read()
             image = self._preprocess_image_input(image_bytes)
             predictions = self.model.predict(image)
@@ -91,9 +91,9 @@ class ModelServer():
     def _register_image_segmentation_routes(self):
         @self.app.post("/predict")
         async def predict(file: UploadFile = File(...)):
-            if file.content_type != "image/jpeg":
-                raise HTTPException(
-                    status_code=415, detail="Unsupported media type.")
+            # if file.content_type != "image/jpeg":
+            #     raise HTTPException(
+            #         status_code=415, detail="Unsupported media type.")
             image_bytes = await file.read()
             image = self._preprocess_image_input(image_bytes)
             predictions = self.model.predict(image)
